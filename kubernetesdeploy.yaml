@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insure-eta-deploy
+  labels:
+    app: insure-eta-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: insure-eta-app
+  template:
+    metadata:
+      labels:
+        app: insure-eta-app
+    spec:
+      containers:
+      - name: insure-eta-container
+        image: mohan31102001/insure-eta-app
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: insure-eta-np-service
+  labels:
+    app: insure-eta-app
+spec:
+  selector:
+    app: insure-eta-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31030  
+    port: 8082
+    targetPort: 8082
